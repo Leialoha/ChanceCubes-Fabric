@@ -1,0 +1,16 @@
+{
+    "required": true,
+    "package": "chanceCubes.mixins.mixin",
+    "compatibilityLevel": "JAVA_17",
+    "mixins": [ ],
+    "client": [
+        "ClientRenderMixins$GuiRenderOverlay",
+        "ClientRenderMixins$ClientLevelRenderer",
+        "ClientInteractMixins$ClientInteractionBlock",
+        "ClientInteractMixins$ClientInteractionItem",
+        "ClientInteractMixins$ClientInteractionLocalPlayer"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    }
+}

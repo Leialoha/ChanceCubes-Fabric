@@ -3,23 +3,25 @@
     "id": "chancubes",
     "version": "${version}",
     "name": "Chance Cubes",
-    "description": "This is an example description! Tell everyone what your mod is about!",
+    "description": "This is Chance Cubes! A Lucky Block alternative mod!",
     "authors": [
         "TurkeyDev, Leialoha, Traverse_Joe"
     ],
     "contact": {
-        "homepage": "https://fabricmc.net/",
-        "sources": "https://github.com/FabricMC/fabric-example-mod"
+        "homepage": "https://theturkey.dev/projects/chance-cubes-mc",
+        "sources": "https://github.com/Leialoha/ChanceCubes-Fabric"
     },
     "license": "CC0-1.0",
-    "icon": "assets/taverntokens/icon.png",
+    "icon": "assets/chancecubes/icon.png",
     "environment": "*",
     "entrypoints": {
         "main": [
             "chanceCubes.CCubesCore"
         ]
     },
-    "mixins": [],
+    "mixins": [
+        "chancecubes.mixins.json"
+    ],
     "depends": {
         "fabricloader": ">=0.15.10",
         "minecraft": "~1.20.1",

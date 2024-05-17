@@ -16,26 +16,20 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.event.RenderLevelStageEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-public class WorldRenderListener
-{
-	@SubscribeEvent
+public class WorldRenderListener {
 	@Environment(EnvType.CLIENT)
-	public void onLevelRender(RenderLevelStageEvent event)
-	{
-		if(event.getStage() != RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS)
-			return;
+	public void onLevelRender(PoseStack poseStack, Camera camera) {
+		// if(event.getStage() != RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS)
+		// return;
 
 		final Minecraft minecraft = Minecraft.getInstance();
-		Camera camera = minecraft.gameRenderer.getMainCamera();
+		// Camera camera = minecraft.gameRenderer.getMainCamera();
 		RenderBuffers renderBuffers = minecraft.renderBuffers();
 		MultiBufferSource.BufferSource bufferSource = renderBuffers.bufferSource();
-		PoseStack poseStack = event.getPoseStack();
+		// PoseStack poseStack = event.getPoseStack();
 
-		if(SchematicUtil.selectionPoints[0] != null && SchematicUtil.selectionPoints[1] != null)
-		{
+		if (SchematicUtil.selectionPoints[0] != null && SchematicUtil.selectionPoints[1] != null) {
 			Vec3 pos = camera.getPosition();
 			BlockPos pos1 = SchematicUtil.selectionPoints[0];
 			BlockPos pos2 = SchematicUtil.selectionPoints[1];

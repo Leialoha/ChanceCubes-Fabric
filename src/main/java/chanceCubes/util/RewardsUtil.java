@@ -58,22 +58,21 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.StreamSupport;
 
-public class RewardsUtil
-{
-	public static final TagKey<Item> BLACKLIST = TagKey.create(Registries.ITEM, new ResourceLocation(CCubesCore.MODID, "blacklist"));
+public class RewardsUtil {
+	public static final TagKey<Item> BLACKLIST = TagKey.create(Registries.ITEM,
+			new ResourceLocation(CCubesCore.MODID, "blacklist"));
 	private static final List<String> oredicts = new ArrayList<>();
-	private static final String[] possibleModOres = new String[]{"ores/aluminum", "ores/copper", "ores/mythril", "ores/lead", "ores/plutonium", "ores/quartz", "ores/ruby", "ores/salt", "ores/sapphire", "ores/silver", "ores/tin", "ores/uranium", "ores/zinc"};
+	private static final String[] possibleModOres = new String[] { "ores/aluminum", "ores/copper", "ores/mythril",
+			"ores/lead", "ores/plutonium", "ores/quartz", "ores/ruby", "ores/salt", "ores/sapphire", "ores/silver",
+			"ores/tin", "ores/uranium", "ores/zinc" };
 
 	public static final Random rand = new Random();
 
-	public static List<String> getOreDicts()
-	{
+	public static List<String> getOreDicts() {
 		return oredicts;
 	}
 
-
-	public static void initData()
-	{
+	public static void initData() {
 		oredicts.add("ores/gold");
 		oredicts.add("ores/iron");
 		oredicts.add("ores/lapis");
@@ -83,24 +82,22 @@ public class RewardsUtil
 		oredicts.add("ores/quartz");
 		oredicts.add("ores/coal");
 
-		for(String oreDict : possibleModOres)
-			if(BuiltInRegistries.BLOCK.getTagOrEmpty(getTagKey(new ResourceLocation("forge", oreDict))).iterator().hasNext())
+		for (String oreDict : possibleModOres)
+			if (BuiltInRegistries.BLOCK.getTagOrEmpty(getTagKey(new ResourceLocation("forge", oreDict))).iterator()
+					.hasNext())
 				oredicts.add(oreDict);
 	}
 
-	public static CommandPart[] executeXCommands(String command, int amount)
-	{
+	public static CommandPart[] executeXCommands(String command, int amount) {
 		CommandPart[] toReturn = new CommandPart[amount];
-		for(int i = 0; i < amount; i++)
+		for (int i = 0; i < amount; i++)
 			toReturn[i] = new CommandPart(command);
 		return toReturn;
 	}
 
-	public static CommandPart[] executeXCommands(String command, int amount, int delay)
-	{
+	public static CommandPart[] executeXCommands(String command, int amount, int delay) {
 		CommandPart[] toReturn = new CommandPart[amount];
-		for(int i = 0; i < amount; i++)
-		{
+		for (int i = 0; i < amount; i++) {
 			CommandPart part = new CommandPart(command);
 			part.setDelay(delay);
 			toReturn[i] = part;
@@ -108,154 +105,129 @@ public class RewardsUtil
 		return toReturn;
 	}
 
-	public static void sendMessageToNearPlayers(Level level, BlockPos pos, int distance, String message)
-	{
-		for(int i = 0; i < level.players().size(); ++i)
-		{
+	public static void sendMessageToNearPlayers(Level level, BlockPos pos, int distance, String message) {
+		for (int i = 0; i < level.players().size(); ++i) {
 			Player entityplayer = level.players().get(i);
-			double dist = Math.sqrt(Math.pow(pos.getX() - entityplayer.getX(), 2) + Math.pow(pos.getY() - entityplayer.getY(), 2) + Math.pow(pos.getZ() - entityplayer.getZ(), 2));
-			if(dist <= distance)
+			double dist = Math.sqrt(Math.pow(pos.getX() - entityplayer.getX(), 2)
+					+ Math.pow(pos.getY() - entityplayer.getY(), 2) + Math.pow(pos.getZ() - entityplayer.getZ(), 2));
+			if (dist <= distance)
 				sendMessageToPlayer(entityplayer, message);
 		}
 	}
 
-	public static void sendMessageToAllPlayers(Level level, String message)
-	{
-		for(int i = 0; i < level.players().size(); ++i)
-		{
+	public static void sendMessageToAllPlayers(Level level, String message) {
+		for (int i = 0; i < level.players().size(); ++i) {
 			Player entityplayer = level.players().get(i);
 			sendMessageToPlayer(entityplayer, message);
 		}
 	}
 
-	public static void sendMessageToPlayer(Player player, String message)
-	{
-		if(player != null)
+	public static void sendMessageToPlayer(Player player, String message) {
+		if (player != null)
 			sendMessageToPlayer(player, ComponentWrapper.string(message));
 	}
 
-	public static void sendMessageToPlayer(Player player, Component message)
-	{
-		if(player != null)
+	public static void sendMessageToPlayer(Player player, Component message) {
+		if (player != null)
 			player.sendSystemMessage(message);
 	}
 
-	public static ItemStack getItemStack(String mod, String itemName, int size)
-	{
+	public static ItemStack getItemStack(String mod, String itemName, int size) {
 		Item item = BuiltInRegistries.ITEM.get(new ResourceLocation(mod, itemName));
 		return item == null ? ItemStack.EMPTY : new ItemStack(item, size);
 	}
 
-	public static Block getBlock(String mod, String blockName)
-	{
+	public static Block getBlock(String mod, String blockName) {
 		return BuiltInRegistries.BLOCK.get(new ResourceLocation(mod, blockName));
 	}
 
-	public static boolean placeBlock(BlockState b, Level level, BlockPos pos)
-	{
+	public static boolean placeBlock(BlockState b, Level level, BlockPos pos) {
 		return RewardsUtil.placeBlock(b, level, pos, 3, false);
 	}
 
-	public static boolean placeBlock(BlockState b, Level level, BlockPos pos, boolean ignoreUnbreakable)
-	{
+	public static boolean placeBlock(BlockState b, Level level, BlockPos pos, boolean ignoreUnbreakable) {
 		return RewardsUtil.placeBlock(b, level, pos, 3, ignoreUnbreakable);
 	}
 
-	public static boolean placeBlock(BlockState b, Level level, BlockPos pos, int update, boolean ignoreUnbreakable)
-	{
-		if(!RewardsUtil.isBlockUnbreakable(level, pos) || ignoreUnbreakable)
-		{
+	public static boolean placeBlock(BlockState b, Level level, BlockPos pos, int update, boolean ignoreUnbreakable) {
+		if (!RewardsUtil.isBlockUnbreakable(level, pos) || ignoreUnbreakable) {
 			level.setBlock(pos, b, update);
 			return true;
 		}
 		return false;
 	}
 
-	public static boolean isBlockUnbreakable(Level level, BlockPos pos)
-	{
-		return level.getBlockState(pos).getDestroySpeed(level, pos) == -1 || CCubesSettings.nonReplaceableBlocks.contains(level.getBlockState(pos));
+	public static boolean isBlockUnbreakable(Level level, BlockPos pos) {
+		return level.getBlockState(pos).getDestroySpeed(level, pos) == -1
+				|| CCubesSettings.nonReplaceableBlocks.contains(level.getBlockState(pos));
 	}
 
-	public static Enchantment getEnchantSafe(ResourceLocation res)
-	{
+	public static Enchantment getEnchantSafe(ResourceLocation res) {
 		return getRegistryEntrySafe(BuiltInRegistries.ENCHANTMENT, res);
 	}
 
-	public static MobEffect getPotionSafe(ResourceLocation res)
-	{
+	public static MobEffect getPotionSafe(ResourceLocation res) {
 		return getRegistryEntrySafe(BuiltInRegistries.MOB_EFFECT, res);
 	}
 
-	public static ParticleType<?> getParticleSafe(ResourceLocation res)
-	{
+	public static ParticleType<?> getParticleSafe(ResourceLocation res) {
 		return getRegistryEntrySafe(BuiltInRegistries.PARTICLE_TYPE, res);
 	}
 
-	public static <T> T getRegistryEntrySafe(Registry<T> registry, ResourceLocation key)
-	{
+	public static <T> T getRegistryEntrySafe(Registry<T> registry, ResourceLocation key) {
 		T val = registry.get(key);
 		return val == null ? registry.entrySet().stream().findFirst().get().getValue() : val;
 	}
 
-	public static Block getRandomOre()
-	{
+	public static Block getRandomOre() {
 		return getRandomOre(new ArrayList<>());
 	}
 
-	public static Block getRandomOre(List<String> blacklist)
-	{
+	public static Block getRandomOre(List<String> blacklist) {
 		return getRandomOreFromOreDict(RewardsUtil.getRandomOreDict(blacklist));
 	}
 
-	public static Block getRandomOreFromOreDict(String oreDict)
-	{
-		return getRandomElement(BuiltInRegistries.BLOCK.getTagOrEmpty(getTagKey(new ResourceLocation("forge", oreDict))));
+	public static Block getRandomOreFromOreDict(String oreDict) {
+		return getRandomElement(
+				BuiltInRegistries.BLOCK.getTagOrEmpty(getTagKey(new ResourceLocation("forge", oreDict))));
 	}
 
-	private static Block getRandomElement(Iterable<Holder<Block>> it)
-	{
+	private static Block getRandomElement(Iterable<Holder<Block>> it) {
 		List<Holder<Block>> result = StreamSupport.stream(it.spliterator(), false).toList();
 		return result.get(rand.nextInt(result.size())).value();
 	}
 
-	private static TagKey<Block> getTagKey(ResourceLocation res)
-	{
+	private static TagKey<Block> getTagKey(ResourceLocation res) {
 		return TagKey.create(Registries.BLOCK, res);
 	}
 
-	public static Block getRandomBlock()
-	{
+	public static Block getRandomBlock() {
 		return randomRegistryEntry(BuiltInRegistries.BLOCK, Blocks.COBBLESTONE);
 	}
 
-	public static Item getRandomItem()
-	{
+	public static Item getRandomItem() {
 		Item item;
 		do
 			item = randomRegistryEntry(BuiltInRegistries.ITEM, Items.APPLE);
-		while(item == null || !item.isEnabled(FeatureFlags.VANILLA_SET) || item.getDefaultInstance().is(BLACKLIST));
+		while (item == null || !item.isEnabled(FeatureFlags.VANILLA_SET) || item.getDefaultInstance().is(BLACKLIST));
 		return item;
 	}
 
-	public static Enchantment randomEnchantment()
-	{
+	public static Enchantment randomEnchantment() {
 		return randomRegistryEntry(BuiltInRegistries.ENCHANTMENT, Enchantments.SHARPNESS);
 	}
 
-	public static CustomEntry<Enchantment, Integer> getRandomEnchantmentAndLevel()
-	{
+	public static CustomEntry<Enchantment, Integer> getRandomEnchantmentAndLevel() {
 		Enchantment ench = randomEnchantment();
 		int level = rand.nextInt(ench.getMaxLevel()) + ench.getMinLevel();
 		return new CustomEntry<>(ench, level);
 	}
 
-	public static MobEffect getRandomPotionEffect()
-	{
+	public static MobEffect getRandomPotionEffect() {
 		return randomRegistryEntry(BuiltInRegistries.MOB_EFFECT, MobEffects.GLOWING);
 	}
 
-	public static MobEffectInstance getRandomPotionEffectInstance()
-	{
+	public static MobEffectInstance getRandomPotionEffectInstance() {
 		MobEffect effect = RewardsUtil.getRandomPotionEffect();
 		int duration = ((int) Math.round(Math.abs(rand.nextGaussian()) * 5) + 3) * 20;
 		int amplifier = (int) Math.round(Math.abs(rand.nextGaussian() * 1.5));
@@ -263,49 +235,42 @@ public class RewardsUtil
 		return new MobEffectInstance(effect, duration, amplifier);
 	}
 
-	public static Potion getRandomPotionType()
-	{
+	public static Potion getRandomPotionType() {
 		return randomRegistryEntry(BuiltInRegistries.POTION, Potions.EMPTY);
 	}
 
-	public static <T> T randomRegistryEntry(Registry<T> registry, T defaultReturn)
-	{
+	public static <T> T randomRegistryEntry(Registry<T> registry, T defaultReturn) {
 		Collection<T> entries = registry.entrySet().stream().map(entry -> entry.getValue()).toList();
 		T entry = entries.stream().skip(rand.nextInt(entries.size())).findFirst().orElse(null);
 		int iteration = 0;
-		while(entry == null)
-		{
+		while (entry == null) {
 			iteration++;
-			if(iteration > 100)
+			if (iteration > 100)
 				return defaultReturn;
 			entry = entries.stream().skip(rand.nextInt(entries.size())).findFirst().orElse(null);
 		}
 		return entry;
 	}
 
-	public static ItemStack getRandomFirework()
-	{
+	public static ItemStack getRandomFirework() {
 		ItemStack stack = new ItemStack(Items.FIREWORK_ROCKET);
 		CompoundTag data = new CompoundTag();
 		data.putInt("Flight", rand.nextInt(3) + 1);
 
 		ListTag explosionList = new ListTag();
 
-		for(int i = 0; i <= rand.nextInt(2); i++)
-		{
+		for (int i = 0; i <= rand.nextInt(2); i++) {
 			CompoundTag explosionData = new CompoundTag();
 			explosionData.putInt("Type", rand.nextInt(5));
 			explosionData.putBoolean("Flicker", rand.nextBoolean());
 			explosionData.putBoolean("Trail", rand.nextBoolean());
 			int[] colors = new int[rand.nextInt(2) + 1];
-			for(int j = 0; j < colors.length; j++)
-			{
+			for (int j = 0; j < colors.length; j++) {
 				colors[j] = getRandomColor();
 			}
 			explosionData.putIntArray("Colors", colors);
 			int[] fadeColors = new int[rand.nextInt(2) + 1];
-			for(int j = 0; j < fadeColors.length; j++)
-			{
+			for (int j = 0; j < fadeColors.length; j++) {
 				fadeColors[j] = getRandomColor();
 			}
 			explosionData.putIntArray("FadeColors", fadeColors);
@@ -320,117 +285,108 @@ public class RewardsUtil
 		return stack;
 	}
 
-	public static String getRandomOreDict()
-	{
+	public static String getRandomOreDict() {
 		return getRandomOreDict(new ArrayList<>());
 	}
 
-	public static String getRandomOreDict(List<String> blacklist)
-	{
+	public static String getRandomOreDict(List<String> blacklist) {
 		List<String> oredicts = RewardsUtil.getOreDicts().stream().filter(line -> !blacklist.contains(line)).toList();
 		return oredicts.size() > 0 ? oredicts.get(rand.nextInt(oredicts.size())) : "ores/coal";
 	}
 
-	public static Fluid getRandomFluid(boolean onlySources)
-	{
+	public static Fluid getRandomFluid(boolean onlySources) {
 		Fluid fluid;
 		do
 			fluid = randomRegistryEntry(BuiltInRegistries.FLUID, Fluids.WATER);
-		while(onlySources && !fluid.isSource(fluid.defaultFluidState()));
+		while (onlySources && !fluid.isSource(fluid.defaultFluidState()));
 
 		return fluid;
 	}
 
-	public static int getRandomColor()
-	{
+	public static int getRandomColor() {
 		return (new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256))).getRGB();
 	}
 
-	private static final Block[] wools = {Blocks.WHITE_WOOL, Blocks.ORANGE_WOOL, Blocks.MAGENTA_WOOL, Blocks.LIGHT_BLUE_WOOL, Blocks.LIME_WOOL, Blocks.PINK_WOOL, Blocks.GRAY_WOOL, Blocks.LIGHT_GRAY_WOOL, Blocks.CYAN_WOOL, Blocks.PURPLE_WOOL, Blocks.BLUE_WOOL, Blocks.BROWN_WOOL, Blocks.GREEN_WOOL, Blocks.RED_WOOL, Blocks.BLACK_WOOL};
+	private static final Block[] wools = { Blocks.WHITE_WOOL, Blocks.ORANGE_WOOL, Blocks.MAGENTA_WOOL,
+			Blocks.LIGHT_BLUE_WOOL, Blocks.LIME_WOOL, Blocks.PINK_WOOL, Blocks.GRAY_WOOL, Blocks.LIGHT_GRAY_WOOL,
+			Blocks.CYAN_WOOL, Blocks.PURPLE_WOOL, Blocks.BLUE_WOOL, Blocks.BROWN_WOOL, Blocks.GREEN_WOOL,
+			Blocks.RED_WOOL, Blocks.BLACK_WOOL };
 
-	public static BlockState getRandomWool()
-	{
+	public static BlockState getRandomWool() {
 		return wools[rand.nextInt(wools.length)].defaultBlockState();
 	}
 
-
-	public static boolean isPlayerOnline(Player player)
-	{
-		if(player == null)
+	public static boolean isPlayerOnline(Player player) {
+		if (player == null)
 			return false;
 
-		for(ServerPlayer playerMP : player.level().getServer().getPlayerList().getPlayers())
-			if(playerMP.getUUID().equals(player.getUUID()))
+		for (ServerPlayer playerMP : player.level().getServer().getPlayerList().getPlayers())
+			if (playerMP.getUUID().equals(player.getUUID()))
 				return true;
 
 		return false;
 	}
 
-	public static void executeCommand(ServerLevel level, Player player, Vec3i pos, String command)
-	{
+	public static void executeCommand(ServerLevel level, Player player, Vec3i pos, String command) {
 		RewardsUtil.executeCommand(level, player, new Vec3(pos.getX(), pos.getY(), pos.getZ()), command);
 	}
 
-	public static void executeCommand(ServerLevel level, Player player, Vec3 pos, String command)
-	{
+	public static void executeCommand(ServerLevel level, Player player, Vec3 pos, String command) {
 		MinecraftServer server = level.getServer();
 		boolean rule = level.getGameRules().getBoolean(GameRules.RULE_COMMANDBLOCKOUTPUT);
 		level.getGameRules().getRule(GameRules.RULE_COMMANDBLOCKOUTPUT).set(false, server);
-		CommandSourceStack cs = new CommandSourceStack(player, pos, player.getRotationVector(), level, 2, player.getName().getString(), player.getDisplayName(), server, player);
+		CommandSourceStack cs = new CommandSourceStack(player, pos, player.getRotationVector(), level, 2,
+				player.getName().getString(), player.getDisplayName(), server, player);
 		cs = cs.withSuppressedOutput();
 		server.getCommands().performPrefixedCommand(cs, command);
 		level.getGameRules().getRule(GameRules.RULE_COMMANDBLOCKOUTPUT).set(rule, server);
 	}
 
-	public static void setNearPlayersTitle(Level level, BlockPos pos, int range, GuiTextLocation type, Component message, int fadeInTime, int displayTime, int fadeOutTime)
-	{
-		for(int i = 0; i < level.players().size(); ++i)
-		{
+	public static void setNearPlayersTitle(Level level, BlockPos pos, int range, GuiTextLocation type,
+			Component message, int fadeInTime, int displayTime, int fadeOutTime) {
+		for (int i = 0; i < level.players().size(); ++i) {
 			Player entityplayer = level.players().get(i);
 
-			double dist = Math.sqrt(Math.pow(pos.getX() - entityplayer.getX(), 2) + Math.pow(pos.getY() - entityplayer.getY(), 2) + Math.pow(pos.getZ() - entityplayer.getZ(), 2));
-			if(dist <= range)
+			double dist = Math.sqrt(Math.pow(pos.getX() - entityplayer.getX(), 2)
+					+ Math.pow(pos.getY() - entityplayer.getY(), 2) + Math.pow(pos.getZ() - entityplayer.getZ(), 2));
+			if (dist <= range)
 				setPlayerTitle(entityplayer, type, message, fadeInTime, displayTime, fadeOutTime);
 		}
 	}
 
-	public static void setAllPlayersTitle(Level level, GuiTextLocation type, Component message, int fadeInTime, int displayTime, int fadeOutTime)
-	{
-		for(int i = 0; i < level.players().size(); ++i)
+	public static void setAllPlayersTitle(Level level, GuiTextLocation type, Component message, int fadeInTime,
+			int displayTime, int fadeOutTime) {
+		for (int i = 0; i < level.players().size(); ++i)
 			setPlayerTitle(level.players().get(i), type, message, fadeInTime, displayTime, fadeOutTime);
 	}
 
-	public static void setPlayerTitle(Player player, GuiTextLocation type, Component message, int fadeInTime, int displayTime, int fadeOutTime)
-	{
-		if(player instanceof ServerPlayer)
-		{
+	public static void setPlayerTitle(Player player, GuiTextLocation type, Component message, int fadeInTime,
+			int displayTime, int fadeOutTime) {
+		if (player instanceof ServerPlayer) {
 			Packet<?> titlePacket;
-			switch(type)
-			{
+			switch (type) {
 				case TITLE -> titlePacket = new ClientboundSetTitleTextPacket(message);
 				case SUBTITLE -> titlePacket = new ClientboundSetSubtitleTextPacket(message);
 				default -> titlePacket = new ClientboundSetActionBarTextPacket(message);
 			}
-			ClientboundSetTitlesAnimationPacket timesPacket = new ClientboundSetTitlesAnimationPacket(fadeInTime, displayTime, fadeOutTime);
+			ClientboundSetTitlesAnimationPacket timesPacket = new ClientboundSetTitlesAnimationPacket(fadeInTime,
+					displayTime, fadeOutTime);
 			((ServerPlayer) player).connection.send(timesPacket);
 			((ServerPlayer) player).connection.send(titlePacket);
 		}
 	}
 
-
-	public static String[] getHardcodedRewards()
-	{
-		try
-		{
-			BufferedReader in = new BufferedReader(new InputStreamReader(RewardsUtil.class.getResourceAsStream("/data/chancecubes/rewards/rewards.txt")));
+	public static String[] getHardcodedRewards() {
+		try {
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					RewardsUtil.class.getResourceAsStream("/data/chancecubes/rewards/rewards.txt")));
 			List<String> files = new ArrayList<>();
 			String line;
-			while((line = in.readLine()) != null)
+			while ((line = in.readLine()) != null)
 				files.add(line);
 			in.close();
 			return files.toArray(new String[0]);
-		} catch(Exception e)
-		{
+		} catch (Exception e) {
 			CCubesCore.logger.error("CHANCE CUBES WAS UNABLE TO LOAD IN ITS DEFAULT REWARDS!!!!");
 			CCubesCore.logger.error("REPORT TO MOD AUTHOR ASAP!!!");
 			e.printStackTrace();
@@ -438,19 +394,17 @@ public class RewardsUtil
 		return new String[0];
 	}
 
-	public static JsonObject getRewardJson(String file)
-	{
-		BufferedReader in = new BufferedReader(new InputStreamReader(RewardsUtil.class.getResourceAsStream("/data/chancecubes/rewards/" + file)));
+	public static JsonObject getRewardJson(String file) {
+		BufferedReader in = new BufferedReader(
+				new InputStreamReader(RewardsUtil.class.getResourceAsStream("/data/chancecubes/rewards/" + file)));
 		StringBuilder builder = new StringBuilder();
-		try
-		{
+		try {
 			String line;
-			while((line = in.readLine()) != null)
+			while ((line = in.readLine()) != null)
 				builder.append(line);
 
 			in.close();
-		} catch(IOException e)
-		{
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return JsonParser.parseString(builder.toString()).getAsJsonObject();

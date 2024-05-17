@@ -7,11 +7,8 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class RenderEvent {
 	private static boolean islookingAt = false;
@@ -19,18 +16,15 @@ public class RenderEvent {
 	private static int chance = -201;
 	private static int chanceIncrease = 0;
 
-	@SubscribeEvent
 	@Environment(EnvType.CLIENT)
-	public void onGuiRender(RenderGuiOverlayEvent.Post event) {
-		if (event.getOverlay().id() != VanillaGuiOverlay.TITLE_TEXT.id() || event.isCancelable())
-			return;
+	public void onGuiRender(Gui gui, GuiGraphics guiGraphics, int width, int height, float delta) {
+		// if (event.getOverlay().id() != VanillaGuiOverlay.TITLE_TEXT.id() || event.isCancelable())
+		// 	return;
 
-		int k = event.getWindow().getGuiScaledWidth();
-		int l = event.getWindow().getGuiScaledHeight();
+		// int width = event.getWindow().getGuiScaledWidth();
+		// int height = event.getWindow().getGuiScaledHeight();
 
 		Font fontRenderer = Minecraft.getInstance().font;
-
-		GuiGraphics guiGraphics = event.getGuiGraphics();
 		PoseStack matrixStack = guiGraphics.pose();
 
 		if (islookingAt) {
@@ -40,14 +34,14 @@ public class RenderEvent {
 			// GlStateManager.color4f(1F, 1F, 1F, 1F);
 			if (chance == -201) {
 				guiGraphics.drawString(fontRenderer, "The chance of this cube is: Destruction... Probably",
-						(int) (k / 2f) - 80, (int) (l / 2f) - 30, 16777215, false);
+						(int) (width / 2f) - 80, (int) (height / 2f) - 30, 16777215, false);
 			} else {
-				guiGraphics.drawString(fontRenderer, "The chance of this cube is: " + chance, (int) (k / 2f) - 80,
-						(int) (l / 2f) - 30, 16777215, false);
+				guiGraphics.drawString(fontRenderer, "The chance of this cube is: " + chance, (int) (width / 2f) - 80,
+						(int) (height / 2f) - 30, 16777215, false);
 				if (chanceIncrease != 0) {
 					int c = chance + chanceIncrease;
 					guiGraphics.drawString(fontRenderer, "Chance with pendants is: " + Math.min(100, Math.max(c, -100)),
-							(int) (k / 2f) - 80, (int) (l / 2f) - 15, 16777215, false);
+							(int) (width / 2f) - 80, (int) (height / 2f) - 15, 16777215, false);
 				}
 			}
 			// TODO
@@ -68,22 +62,22 @@ public class RenderEvent {
 			String text6 = "Point 2";
 
 			guiGraphics.drawString(fontRenderer, text1, 
-					(int) ((k / 2f) - (fontRenderer.width(text1) / 2f)), 10, 0xFFFFFF,
+					(int) ((width / 2f) - (fontRenderer.width(text1) / 2f)), 10, 0xFFFFFF,
 					false);
 			guiGraphics.drawString(fontRenderer, text2, 
-					(int) ((k / 2f) - (fontRenderer.width(text2) / 2f)), 20, 0xFFFFFF,
+					(int) ((width / 2f) - (fontRenderer.width(text2) / 2f)), 20, 0xFFFFFF,
 					false);
 			guiGraphics.drawString(fontRenderer, text3, 
-					(int) ((k / 2f) - (fontRenderer.width(text3) / 2f)), 30, 0xFFFFFF,
+					(int) ((width / 2f) - (fontRenderer.width(text3) / 2f)), 30, 0xFFFFFF,
 					false);
 			guiGraphics.drawString(fontRenderer, text4, 
-					(int) ((k / 2f) - (fontRenderer.width(text4) / 2f)), 40, 0xFFFFFF,
+					(int) ((width / 2f) - (fontRenderer.width(text4) / 2f)), 40, 0xFFFFFF,
 					false);
 			guiGraphics.drawString(fontRenderer, text5, 
-					(int) ((k / 2f) - (fontRenderer.width(text5) / 2f)), 60,
+					(int) ((width / 2f) - (fontRenderer.width(text5) / 2f)), 60,
 					SchematicUtil.selectionPoints[0] == null ? 0xFF0000 : 0x00FF00, false);
 			guiGraphics.drawString(fontRenderer, text6, 
-					(int) ((k / 2f) - (fontRenderer.width(text6) / 2f)), 70,
+					(int) ((width / 2f) - (fontRenderer.width(text6) / 2f)), 70,
 					SchematicUtil.selectionPoints[1] == null ? 0xFF0000 : 0x00FF00, false);
 
 			// TODO

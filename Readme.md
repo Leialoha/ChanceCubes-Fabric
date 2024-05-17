@@ -14,4 +14,4 @@ If you would like to contribute, simply fork the repository and make sure you ha
 **Note for Contributors:** Support for older versions of Minecraft is not guaranteed and contributions to the corresponding branches will almost certainly be denied for this reason, the sole exception being game-breaking bugs which are usually squashed by the time support ends.
 
 **Currently supported branches:**\
-dev_1.18.x
+dev_1.20.x

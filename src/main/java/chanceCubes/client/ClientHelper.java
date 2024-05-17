@@ -12,6 +12,7 @@ import chanceCubes.network.CCubesNetwork;
 import chanceCubes.renderer.TileChanceD20Renderer;
 import chanceCubes.renderer.TileCubeDispenserRenderer;
 import chanceCubes.renderer.TileGiantCubeRenderer;
+import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.SimpleMenuProvider;
@@ -26,12 +27,16 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.network.PacketDistributor;
 
-public class ClientHelper {
-	@SubscribeEvent
-	public static void clientStart(FMLClientSetupEvent event) {
-		MinecraftForge.EVENT_BUS.register(new RenderEvent());
-		MinecraftForge.EVENT_BUS.register(new WorldRenderListener());
-		MinecraftForge.EVENT_BUS.register(new BlockListener());
+public class ClientHelper implements ClientModInitializer {
+	public static RenderEvent guiRenderEvent;
+	public static WorldRenderListener levelRenderEvent;
+	public static BlockListener blockListener;
+
+	@Override
+	public void onInitializeClient() {
+		guiRenderEvent = new RenderEvent();
+		levelRenderEvent = new WorldRenderListener();
+		blockListener = new BlockListener();
 
 		// TODO
 		// RenderTypeLookup.setRenderLayer(CCubesBlocks.CHANCE_ICOSAHEDRON,
