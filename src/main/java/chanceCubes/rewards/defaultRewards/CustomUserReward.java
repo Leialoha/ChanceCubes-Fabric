@@ -42,7 +42,7 @@ public class CustomUserReward extends BaseCustomReward
 
 	public static void getCustomUserReward(UUID uuid)
 	{
-		if(!CCubesSettings.userSpecificRewards.get())
+		if(!CCubesCore.CONFIG.get().userSpecificRewards)
 			return;
 
 		JsonElement users;
@@ -149,7 +149,7 @@ public class CustomUserReward extends BaseCustomReward
 		if(!UsernameCache.getLastKnownUsername(uuid).equalsIgnoreCase(player.getName().getString()))
 		{
 			RewardsUtil.sendMessageToPlayer(player, "Hey you aren't " + this.userName + "! You can't have their reward! Try again!");
-			Entity itemEnt = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(CCubesBlocks.CHANCE_CUBE.get(), 1));
+			Entity itemEnt = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(CCubesBlocks.CHANCE_CUBE, 1));
 			level.addFreshEntity(itemEnt);
 			return;
 		}

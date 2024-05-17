@@ -48,7 +48,7 @@ public class ConfigLoader
 
 	public static void initParentFolder()
 	{
-		(new File(FMLPaths.CONFIGDIR.get().toString(), "chancecubes")).mkdir();
+		(new File(FMLPaths.CONFIGDIR.toString(), "chancecubes")).mkdir();
 	}
 
 	/**

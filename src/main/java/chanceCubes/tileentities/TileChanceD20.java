@@ -1,7 +1,7 @@
 package chanceCubes.tileentities;
 
+import chanceCubes.CCubesCore;
 import chanceCubes.blocks.CCubesBlocks;
-import chanceCubes.config.CCubesSettings;
 import chanceCubes.registry.global.GlobalCCRewardRegistry;
 import chanceCubes.sounds.CCubesSounds;
 import net.minecraft.core.BlockPos;
@@ -33,8 +33,8 @@ public class TileChanceD20 extends BlockEntity
 
 	public TileChanceD20(BlockPos pos, BlockState state)
 	{
-		super(CCubesBlocks.TILE_CHANCE_ICOSAHEDRON.get(), pos, state);
-		if(!CCubesSettings.d20UseNormalChances.get())
+		super(CCubesBlocks.TILE_CHANCE_ICOSAHEDRON, pos, state);
+		if(!CCubesCore.CONFIG.get().d20UseNormalChances)
 		{
 			this.chance = random.nextBoolean() ? -100 : 100;
 		}
@@ -48,7 +48,7 @@ public class TileChanceD20 extends BlockEntity
 
 	public TileChanceD20(int initialChance, BlockPos pos, BlockState state)
 	{
-		super(CCubesBlocks.TILE_CHANCE_ICOSAHEDRON.get(), pos, state);
+		super(CCubesBlocks.TILE_CHANCE_ICOSAHEDRON, pos, state);
 		this.chance = initialChance;
 	}
 
@@ -119,7 +119,7 @@ public class TileChanceD20 extends BlockEntity
 		{
 			if(!player.level().isClientSide())
 			{
-				player.level().playSound(null, this.getBlockPos().getX(), this.getBlockPos().getY(), this.getBlockPos().getZ(), CCubesSounds.D20_BREAK.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+				player.level().playSound(null, this.getBlockPos().getX(), this.getBlockPos().getY(), this.getBlockPos().getZ(), CCubesSounds.D20_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
 				this.player = player;
 			}
 			breaking = true;

@@ -8,10 +8,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraft.core.registries.BuiltInRegistries;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,7 +55,7 @@ public class NonreplaceableBlockOverride
 	 * @return The resulting {@link NonreplaceableBlockOverride}.<
 	 */
 	@Nullable
-	private static NonreplaceableBlockOverride parseString(@Nonnull String string)
+	private static NonreplaceableBlockOverride parseString(String string)
 	{
 		try
 		{
@@ -95,7 +94,7 @@ public class NonreplaceableBlockOverride
 	{
 		NonreplaceableBlockOverride output = new NonreplaceableBlockOverride();
 		output.overrideType = OverrideType.REMOVE;
-		output.overriddenBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(substring)).defaultBlockState();
+		output.overriddenBlock = BuiltInRegistries.BLOCK.get(new ResourceLocation(substring)).defaultBlockState();
 		return output;
 	}
 
@@ -109,7 +108,7 @@ public class NonreplaceableBlockOverride
 	{
 		NonreplaceableBlockOverride output = new NonreplaceableBlockOverride();
 		output.overrideType = OverrideType.ADD;
-		output.overriddenBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(substring)).defaultBlockState();
+		output.overriddenBlock = BuiltInRegistries.BLOCK.get(new ResourceLocation(substring)).defaultBlockState();
 		return output;
 	}
 
@@ -138,7 +137,7 @@ public class NonreplaceableBlockOverride
 	 * @return The {@link java.lang.String String} produced or null if an error occurs.
 	 */
 	@Nullable
-	private static String parseOverride(@Nonnull NonreplaceableBlockOverride override)
+	private static String parseOverride(NonreplaceableBlockOverride override)
 	{
 		switch(override.overrideType)
 		{
@@ -200,9 +199,9 @@ public class NonreplaceableBlockOverride
 			CCubesSettings.nonReplaceableBlocks.addAll(CCubesSettings.backupNRB);
 		}
 
-		CCubesSettings.nonReplaceableBlocks.add(CCubesBlocks.CHANCE_CUBE.get().defaultBlockState());
-		CCubesSettings.nonReplaceableBlocks.add(CCubesBlocks.GIANT_CUBE.get().defaultBlockState());
-		CCubesSettings.nonReplaceableBlocks.add(CCubesBlocks.CHANCE_ICOSAHEDRON.get().defaultBlockState());
+		CCubesSettings.nonReplaceableBlocks.add(CCubesBlocks.CHANCE_CUBE.defaultBlockState());
+		CCubesSettings.nonReplaceableBlocks.add(CCubesBlocks.GIANT_CUBE.defaultBlockState());
+		CCubesSettings.nonReplaceableBlocks.add(CCubesBlocks.CHANCE_ICOSAHEDRON.defaultBlockState());
 	}
 
 	/**

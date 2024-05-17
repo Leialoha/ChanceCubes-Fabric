@@ -30,7 +30,7 @@ public class ChanceCubeRenameReward extends BaseCustomReward
 	@Override
 	public void trigger(ServerLevel level, BlockPos pos, Player player, JsonObject settings)
 	{
-		ItemStack stack = new ItemStack(CCubesBlocks.CHANCE_CUBE.get(), 2);
+		ItemStack stack = new ItemStack(CCubesBlocks.CHANCE_CUBE, 2);
 		String[] allChanceSyn = ArrayUtils.addAll(chanceSyn, super.getSettingAsStringList(settings, "chanceSynonym", new String[0]));
 		String name = allChanceSyn[RewardsUtil.rand.nextInt(allChanceSyn.length)];
 		String[] allCubeSyn = ArrayUtils.addAll(cubeSyn, super.getSettingAsStringList(settings, "cubeSynonym", new String[0]));

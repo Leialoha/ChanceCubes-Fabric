@@ -41,7 +41,7 @@ public class BlockChanceD20 extends BaseChanceBlock implements EntityBlock
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level pLevel, @NotNull BlockState pState, @NotNull BlockEntityType<T> pBlockEntityType) {
-		return pBlockEntityType == CCubesBlocks.TILE_CHANCE_ICOSAHEDRON.get() ? TileChanceD20::tick : null;
+		return pBlockEntityType == CCubesBlocks.TILE_CHANCE_ICOSAHEDRON ? TileChanceD20::tick : null;
 	}
 
 	@Override
@@ -98,9 +98,9 @@ public class BlockChanceD20 extends BaseChanceBlock implements EntityBlock
 
 		if(level.getBlockEntity(pos) instanceof TileChanceD20 te)
 		{
-			if(!player.getInventory().getSelected().isEmpty() && player.getInventory().getSelected().getItem().equals(CCubesItems.SILK_PENDANT.get()))
+			if(!player.getInventory().getSelected().isEmpty() && player.getInventory().getSelected().getItem().equals(CCubesItems.SILK_PENDANT))
 			{
-				ItemStack stack = new ItemStack(CCubesItems.CHANCE_ICOSAHEDRON.get(), 1);
+				ItemStack stack = new ItemStack(CCubesItems.CHANCE_ICOSAHEDRON, 1);
 				((ItemChanceCube) stack.getItem()).setChance(stack, te.isScanned() ? te.getChance() : -101);
 				popResource(level, pos, stack);
 				level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());

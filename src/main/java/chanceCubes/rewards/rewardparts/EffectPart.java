@@ -7,7 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraft.core.registries.BuiltInRegistries;
 import org.apache.logging.log4j.Level;
 
 public class EffectPart extends BasePart
@@ -25,7 +25,7 @@ public class EffectPart extends BasePart
 
 	public EffectPart(MobEffect effect, IntVar duration, IntVar amplifier)
 	{
-		this(new StringVar(String.valueOf(ForgeRegistries.MOB_EFFECTS.getKey(effect))), duration, amplifier);
+		this(new StringVar(String.valueOf(BuiltInRegistries.MOB_EFFECT.getKey(effect))), duration, amplifier);
 	}
 
 	public EffectPart(String id, int duration, int amplifier)
@@ -59,7 +59,7 @@ public class EffectPart extends BasePart
 	public MobEffectInstance getEffect()
 	{
 		String val = id.getValue();
-		MobEffect pot = ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation(val));
+		MobEffect pot = BuiltInRegistries.MOB_EFFECT.get(new ResourceLocation(val));
 
 		if(pot == null)
 		{

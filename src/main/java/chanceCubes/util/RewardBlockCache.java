@@ -1,6 +1,6 @@
 package chanceCubes.util;
 
-import chanceCubes.config.CCubesSettings;
+import chanceCubes.CCubesCore;
 import chanceCubes.mcwrapper.BlockWrapper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -16,8 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RewardBlockCache
-{
+public class RewardBlockCache {
 	protected final List<StoredBlockData> storedBlocks = new ArrayList<>();
 	protected final Map<BlockPos, CompoundTag> storedTE = new HashMap<>();
 
@@ -26,76 +25,64 @@ public class RewardBlockCache
 	private final Level level;
 	private boolean force = true;
 
-	public RewardBlockCache(Level level, BlockPos pos, BlockPos playerLoc)
-	{
+	public RewardBlockCache(Level level, BlockPos pos, BlockPos playerLoc) {
 		this.level = level;
 		this.origin = pos;
 		this.playerLoc = playerLoc;
 	}
 
-	public void setForce(boolean force)
-	{
+	public void setForce(boolean force) {
 		this.force = force;
 	}
 
-	public void cacheBlock(BlockPos offset, BlockState newState)
-	{
+	public void cacheBlock(BlockPos offset, BlockState newState) {
 		cacheBlock(offset, newState, 3);
 	}
 
-	public void cacheBlock(BlockPos offset, BlockState newState, int update)
-	{
+	public void cacheBlock(BlockPos offset, BlockState newState, int update) {
 		BlockPos adjPos = origin.offset(offset);
 		BlockState oldState = level.getBlockState(adjPos);
 		CompoundTag oldNBT = null;
 		BlockEntity te = level.getBlockEntity(adjPos);
-		if(te != null)
-		{
+		if (te != null) {
 			oldNBT = te.serializeNBT();
-			if(te instanceof Container)
+			if (te instanceof Container)
 				((Container) te).clearContent();
 
 		}
 
-		if(RewardsUtil.placeBlock(newState, level, adjPos, update, force))
-		{
-			if(storedBlocks.stream().noneMatch(t -> t.pos.equals(offset)))
-			{
+		if (RewardsUtil.placeBlock(newState, level, adjPos, update, force)) {
+			if (storedBlocks.stream().noneMatch(t -> t.pos.equals(offset))) {
 				storedBlocks.add(new StoredBlockData(offset, oldState, newState));
-				if(oldNBT != null)
+				if (oldNBT != null)
 					storedTE.put(offset, oldNBT);
 			}
 		}
 	}
 
-	public void restoreBlocks(Entity player)
-	{
-		List<? extends String> blockedRestoreBlocks = CCubesSettings.blockRestoreBlacklist.get();
-		for(StoredBlockData storedBlock : storedBlocks)
-		{
+	public void restoreBlocks(Entity player) {
+		List<? extends String> blockedRestoreBlocks = CCubesCore.CONFIG.get().blockRestoreBlacklist;
+		for (StoredBlockData storedBlock : storedBlocks) {
 			BlockPos worldPos = origin.offset(storedBlock.pos);
 			ResourceLocation res = BlockWrapper.getBlockId(level.getBlockState(worldPos).getBlock());
-			if(res == null || !blockedRestoreBlocks.contains(res.toString()))
-			{
+			if (res == null || !blockedRestoreBlocks.contains(res.toString())) {
 				RewardsUtil.placeBlock(storedBlock.oldState, level, worldPos, true);
 				BlockEntity tile = level.getBlockEntity(worldPos);
-				if(storedTE.containsKey(storedBlock.pos) && tile != null)
+				if (storedTE.containsKey(storedBlock.pos) && tile != null)
 					tile.deserializeNBT(storedTE.get(storedBlock.pos));
 			}
 		}
 
-		if(player != null)
+		if (player != null)
 			player.moveTo(playerLoc.getX() + 0.5, playerLoc.getY() + 1, playerLoc.getZ() + 0.5);
 	}
 
-	private static class StoredBlockData
-	{
+	private static class StoredBlockData {
 		public final BlockPos pos;
 		public final BlockState oldState;
 		public final BlockState placedState;
 
-		public StoredBlockData(BlockPos pos, BlockState oldState, BlockState placedState)
-		{
+		public StoredBlockData(BlockPos pos, BlockState oldState, BlockState placedState) {
 			this.pos = pos;
 			this.oldState = oldState;
 			this.placedState = placedState;

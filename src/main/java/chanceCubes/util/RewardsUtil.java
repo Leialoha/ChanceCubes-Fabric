@@ -9,6 +9,7 @@ import com.google.gson.JsonParser;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -25,7 +26,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -47,8 +47,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistry;
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -62,7 +60,7 @@ import java.util.stream.StreamSupport;
 
 public class RewardsUtil
 {
-	public static final TagKey<Item> BLACKLIST = ItemTags.create(new ResourceLocation(CCubesCore.MODID, "blacklist"));
+	public static final TagKey<Item> BLACKLIST = TagKey.create(Registries.ITEM, new ResourceLocation(CCubesCore.MODID, "blacklist"));
 	private static final List<String> oredicts = new ArrayList<>();
 	private static final String[] possibleModOres = new String[]{"ores/aluminum", "ores/copper", "ores/mythril", "ores/lead", "ores/plutonium", "ores/quartz", "ores/ruby", "ores/salt", "ores/sapphire", "ores/silver", "ores/tin", "ores/uranium", "ores/zinc"};
 
@@ -144,13 +142,13 @@ public class RewardsUtil
 
 	public static ItemStack getItemStack(String mod, String itemName, int size)
 	{
-		Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(mod, itemName));
+		Item item = BuiltInRegistries.ITEM.get(new ResourceLocation(mod, itemName));
 		return item == null ? ItemStack.EMPTY : new ItemStack(item, size);
 	}
 
 	public static Block getBlock(String mod, String blockName)
 	{
-		return ForgeRegistries.BLOCKS.getValue(new ResourceLocation(mod, blockName));
+		return BuiltInRegistries.BLOCK.get(new ResourceLocation(mod, blockName));
 	}
 
 	public static boolean placeBlock(BlockState b, Level level, BlockPos pos)
@@ -180,23 +178,23 @@ public class RewardsUtil
 
 	public static Enchantment getEnchantSafe(ResourceLocation res)
 	{
-		return getRegistryEntrySafe(ForgeRegistries.ENCHANTMENTS, res, ForgeRegistries.ENCHANTMENTS.getDefaultKey());
+		return getRegistryEntrySafe(BuiltInRegistries.ENCHANTMENT, res);
 	}
 
 	public static MobEffect getPotionSafe(ResourceLocation res)
 	{
-		return getRegistryEntrySafe(ForgeRegistries.MOB_EFFECTS, res, ForgeRegistries.MOB_EFFECTS.getDefaultKey());
+		return getRegistryEntrySafe(BuiltInRegistries.MOB_EFFECT, res);
 	}
 
 	public static ParticleType<?> getParticleSafe(ResourceLocation res)
 	{
-		return getRegistryEntrySafe(ForgeRegistries.PARTICLE_TYPES, res, ForgeRegistries.PARTICLE_TYPES.getDefaultKey());
+		return getRegistryEntrySafe(BuiltInRegistries.PARTICLE_TYPE, res);
 	}
 
-	public static <T> T getRegistryEntrySafe(IForgeRegistry<T> registry, ResourceLocation key, ResourceLocation defaultReturn)
+	public static <T> T getRegistryEntrySafe(Registry<T> registry, ResourceLocation key)
 	{
-		T val = registry.getValue(key);
-		return val == null ? registry.getValue(defaultReturn) : val;
+		T val = registry.get(key);
+		return val == null ? registry.entrySet().stream().findFirst().get().getValue() : val;
 	}
 
 	public static Block getRandomOre()
@@ -227,21 +225,21 @@ public class RewardsUtil
 
 	public static Block getRandomBlock()
 	{
-		return randomRegistryEntry(ForgeRegistries.BLOCKS, Blocks.COBBLESTONE);
+		return randomRegistryEntry(BuiltInRegistries.BLOCK, Blocks.COBBLESTONE);
 	}
 
 	public static Item getRandomItem()
 	{
 		Item item;
 		do
-			item = randomRegistryEntry(ForgeRegistries.ITEMS, Items.APPLE);
+			item = randomRegistryEntry(BuiltInRegistries.ITEM, Items.APPLE);
 		while(item == null || !item.isEnabled(FeatureFlags.VANILLA_SET) || item.getDefaultInstance().is(BLACKLIST));
 		return item;
 	}
 
 	public static Enchantment randomEnchantment()
 	{
-		return randomRegistryEntry(ForgeRegistries.ENCHANTMENTS, Enchantments.SHARPNESS);
+		return randomRegistryEntry(BuiltInRegistries.ENCHANTMENT, Enchantments.SHARPNESS);
 	}
 
 	public static CustomEntry<Enchantment, Integer> getRandomEnchantmentAndLevel()
@@ -253,7 +251,7 @@ public class RewardsUtil
 
 	public static MobEffect getRandomPotionEffect()
 	{
-		return randomRegistryEntry(ForgeRegistries.MOB_EFFECTS, MobEffects.GLOWING);
+		return randomRegistryEntry(BuiltInRegistries.MOB_EFFECT, MobEffects.GLOWING);
 	}
 
 	public static MobEffectInstance getRandomPotionEffectInstance()
@@ -267,12 +265,12 @@ public class RewardsUtil
 
 	public static Potion getRandomPotionType()
 	{
-		return randomRegistryEntry(ForgeRegistries.POTIONS, Potions.EMPTY);
+		return randomRegistryEntry(BuiltInRegistries.POTION, Potions.EMPTY);
 	}
 
-	public static <T> T randomRegistryEntry(IForgeRegistry<T> registry, T defaultReturn)
+	public static <T> T randomRegistryEntry(Registry<T> registry, T defaultReturn)
 	{
-		Collection<T> entries = registry.getValues();
+		Collection<T> entries = registry.entrySet().stream().map(entry -> entry.getValue()).toList();
 		T entry = entries.stream().skip(rand.nextInt(entries.size())).findFirst().orElse(null);
 		int iteration = 0;
 		while(entry == null)
@@ -337,7 +335,7 @@ public class RewardsUtil
 	{
 		Fluid fluid;
 		do
-			fluid = randomRegistryEntry(ForgeRegistries.FLUIDS, Fluids.WATER);
+			fluid = randomRegistryEntry(BuiltInRegistries.FLUID, Fluids.WATER);
 		while(onlySources && !fluid.isSource(fluid.defaultFluidState()));
 
 		return fluid;

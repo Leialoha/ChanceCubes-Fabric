@@ -55,7 +55,7 @@ public class CCubesPacketHandler
 		ctx.enqueueWork(() ->
 		{
 			ItemStack stack = ctx.getSender().getInventory().getSelected();
-			if(!stack.isEmpty() && (stack.getItem().equals(CCubesItems.REWARD_SELECTOR_PENDANT.get()) || stack.getItem().equals(CCubesItems.SINGLE_USE_REWARD_SELECTOR_PENDANT.get())))
+			if(!stack.isEmpty() && (stack.getItem().equals(CCubesItems.REWARD_SELECTOR_PENDANT) || stack.getItem().equals(CCubesItems.SINGLE_USE_REWARD_SELECTOR_PENDANT)))
 			{
 				CompoundTag nbt = stack.getTag();
 				if(nbt == null)

@@ -1,7 +1,7 @@
 package chanceCubes.rewards.rewardparts;
 
+import chanceCubes.CCubesCore;
 import chanceCubes.blocks.BlockFallingCustom;
-import chanceCubes.config.CCubesSettings;
 import chanceCubes.rewards.variableTypes.BoolVar;
 import chanceCubes.rewards.variableTypes.IntVar;
 import chanceCubes.util.RewardBlockCache;
@@ -111,7 +111,7 @@ public class OffsetBlock extends BasePart
 		int xOffVal = xOff.getIntValue();
 		int yOffVal = yOff.getIntValue();
 		int zOffVal = zOff.getIntValue();
-		double yy = (((double) (y + yOffVal + CCubesSettings.dropHeight.get())) + 0.5) >= 256 ? 255 : (((double) (y + yOffVal + CCubesSettings.dropHeight.get())) + 0.5);
+		double yy = (((double) (y + yOffVal + CCubesCore.CONFIG.get().dropHeight)) + 0.5) >= 256 ? 255 : (((double) (y + yOffVal + CCubesCore.CONFIG.get().dropHeight)) + 0.5);
 		for(int yyy = (int) yy; yyy >= y + yOffVal; yyy--)
 		{
 			BlockPos offsetPos = new BlockPos((x + xOffVal), yyy, (z + zOffVal));

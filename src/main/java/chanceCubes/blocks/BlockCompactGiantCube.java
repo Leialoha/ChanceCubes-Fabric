@@ -25,6 +25,6 @@ public class BlockCompactGiantCube extends BaseChanceBlock
 
 		GiantCubeUtil.setupStructure(pos.offset(-1, 0, -1), level, true);
 
-		level.playSound(null, pos, CCubesSounds.GIANT_CUBE_SPAWN.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+		level.playSound(null, pos, CCubesSounds.GIANT_CUBE_SPAWN, SoundSource.BLOCKS, 1.0F, 1.0F);
 	}
 }

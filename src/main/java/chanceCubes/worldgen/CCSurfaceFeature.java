@@ -1,7 +1,7 @@
 package chanceCubes.worldgen;
 
+import chanceCubes.CCubesCore;
 import chanceCubes.blocks.CCubesBlocks;
-import chanceCubes.config.CCubesSettings;
 import chanceCubes.util.RewardsUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
@@ -23,10 +23,10 @@ public class CCSurfaceFeature extends Feature<NoneFeatureConfiguration>
 	@Override
 	public boolean place(@NotNull FeaturePlaceContext<NoneFeatureConfiguration> context)
 	{
-		if(!CCubesSettings.surfaceGeneration.get())
+		if(!CCubesCore.CONFIG.get().surfaceGeneration)
 			return false;
 
-		if(RewardsUtil.rand.nextInt(CCubesSettings.surfaceGenAmount.get()) != 0)
+		if(RewardsUtil.rand.nextInt(CCubesCore.CONFIG.get().surfaceGenAmount) != 0)
 			return false;
 
 		BlockPos pos = context.origin();
@@ -42,7 +42,7 @@ public class CCSurfaceFeature extends Feature<NoneFeatureConfiguration>
 		if(!bs.canBeReplaced() || bs.is(Blocks.WATER))
 			return false;
 
-		level.setBlock(pos, CCubesBlocks.CHANCE_CUBE.get().defaultBlockState(), 3);
+		level.setBlock(pos, CCubesBlocks.CHANCE_CUBE.defaultBlockState(), 3);
 
 		return true;
 	}

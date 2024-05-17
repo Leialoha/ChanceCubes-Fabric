@@ -12,10 +12,8 @@ import net.minecraft.commands.Commands;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 
-public class CCubesClientCommands
-{
-	public CCubesClientCommands(CommandDispatcher<CommandSourceStack> dispatcher)
-	{
+public class CCubesClientCommands {
+	public CCubesClientCommands(CommandDispatcher<CommandSourceStack> dispatcher) {
 		// @formatter:off
 		dispatcher.register(Commands.literal("chancecubes")
 				.requires(cs -> cs.hasPermission(Commands.LEVEL_GAMEMASTERS))
@@ -30,32 +28,24 @@ public class CCubesClientCommands
 		// @formatter:on
 	}
 
-	public int executeSchematicCreate(CommandContext<CommandSourceStack> ctx)
-	{
-		if(RenderEvent.isCreatingSchematic())
-		{
-			//Possibly make own packet
-			if(SchematicUtil.selectionPoints[0] != null && SchematicUtil.selectionPoints[1] != null)
-			{
-				DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->
-				{
+	public int executeSchematicCreate(CommandContext<CommandSourceStack> ctx) {
+		if (RenderEvent.isCreatingSchematic()) {
+			// Possibly make own packet
+			if (SchematicUtil.selectionPoints[0] != null && SchematicUtil.selectionPoints[1] != null) {
+				DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
 					ClientHelper.openSchematicCreatorGUI(Minecraft.getInstance().player);
 				});
+			} else {
+				RewardsUtil.sendMessageToPlayer(Minecraft.getInstance().player,
+						"Please set both points before moving on!");
 			}
-			else
-			{
-				RewardsUtil.sendMessageToPlayer(Minecraft.getInstance().player, "Please set both points before moving on!");
-			}
-		}
-		else
-		{
+		} else {
 			RenderEvent.setCreatingSchematic(true);
 		}
 		return 0;
 	}
 
-	public int executeSchematicCancel(CommandContext<CommandSourceStack> ctx)
-	{
+	public int executeSchematicCancel(CommandContext<CommandSourceStack> ctx) {
 		RenderEvent.setCreatingSchematic(false);
 		SchematicUtil.selectionPoints[0] = null;
 		SchematicUtil.selectionPoints[1] = null;

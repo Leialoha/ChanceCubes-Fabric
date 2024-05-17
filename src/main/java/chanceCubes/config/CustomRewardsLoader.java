@@ -116,7 +116,7 @@ public class CustomRewardsLoader
 
 	private void loadHolidayRewards(JsonElement json)
 	{
-		if(!CCubesSettings.holidayRewards.get())
+		if(!CCubesCore.CONFIG.get().holidayRewards)
 			return;
 
 		JsonObject holidays = json.getAsJsonObject();
@@ -135,7 +135,7 @@ public class CustomRewardsLoader
 			if(t.getName().equalsIgnoreCase(CCubesSettings.holidayTextureName))
 				BlockChanceCube.textureToSet = t;
 
-		if(!CCubesSettings.holidayRewardTriggered.get())
+		if(!CCubesCore.CONFIG.get().holidayRewardTriggered)
 		{
 			if(holidays.has("Holiday") && !(holidays.get("Holiday") instanceof JsonNull) && holidays.has("Reward") && !(holidays.get("Reward") instanceof JsonNull))
 			{
@@ -158,7 +158,7 @@ public class CustomRewardsLoader
 
 	private void loadDisabledRewards(JsonArray disabledRewards)
 	{
-		if(CCubesSettings.disabledRewards.get())
+		if(CCubesCore.CONFIG.get().disabledRewards)
 		{
 			for(JsonElement reward : disabledRewards)
 			{

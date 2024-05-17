@@ -1,106 +1,92 @@
 plugins {
-    id 'eclipse'
-    id 'idea'
+    id 'fabric-loom' version '1.6-SNAPSHOT'
     id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
 }
 
-ext.buildnumber = 'DEV'
-if (System.getenv('BUILD_NUMBER') != null)
-    project.buildnumber = System.getenv('BUILD_NUMBER')
-else
-    logger.lifecycle "No build number detected, setting to DEV"
+version = project.mod_version
+group = project.maven_group
 
-group = "com.theprogrammingturkey.chancecubes"
-base {
-    archivesName = "ChanceCubes"
-}
-version = "${mc_version}-${mod_version}.${buildnumber}"
+repositories {
+    maven {
+        name = "TerraformersMC"
+        url = "https://maven.terraformersmc.com/"
+    }
+    maven {
+        name = "Ladysnake Libs"
+        url = "https://maven.ladysnake.org/releases"
+    }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
-}
-
-minecraft {
-    mappings channel: 'official', version: "${mc_version}"
-    copyIdeResources = true
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-
-    // default run configurations.
-    // these can be tweaked, removed, or duplicated as needed.
-    runs {
-        client {
-            workingDirectory project.file('run-1.20')
-
-            // Recommended logging data for a userdev environment
-            property 'forge.logging.markers', ''
-
-            // Recommended logging level for the console
-            property 'forge.logging.console.level', 'info'
-
-            mods {
-                chancecubes {
-                    source sourceSets.main
-                }
-            }
+    maven {
+        url "https://maven.shedaniel.me/"
+        content {
+            includeGroup "me.shedaniel"
+            includeGroup "me.shedaniel.cloth"
+            includeGroup "dev.architectury"
         }
+    }
 
-        server {
-            workingDirectory project.file('run-server-1.20')
-
-            // Recommended logging data for a userdev environment
-            property 'forge.logging.markers', ''
-
-            // Recommended logging level for the console
-            property 'forge.logging.console.level', 'info'
-
-            mods {
-                chancecubes {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        data {
-            workingDirectory project.file('run-1.20')
-
-            // Recommended logging data for a userdev environment
-            property 'forge.logging.markers', ''
-
-            // Recommended logging level for the console
-            property 'forge.logging.console.level', 'info'
-
-            args '--mod', "chancecubes", '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-
-            mods {
-                chancecubes {
-                    source sourceSets.main
-                }
-            }
-        }
+    maven {
+        name = "TerraformersMC"
+        url = "https://maven.terraformersmc.com/"
     }
 }
 
-sourceSets.main.resources { srcDir 'src/generated/resources' }
-
-repositories {
-    maven { url 'https://maven.mcmoddev.com' }
-    maven { url 'https://www.dogforce-games.com/maven/' }
+loom {
+	// accessWidenerPath = file("src/main/resources/taverntokens.accesswidener")
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    //mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+    mappings loom.officialMojangMappings()
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    modImplementation "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
+    modApi("com.terraformersmc:modmenu:${project.modmenu_version}")
+}
+
+processResources {
+    inputs.property "version", project.version
+    filteringCharset "UTF-8"
+
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
+    }
+}
+
+def targetJavaVersion = 17
+tasks.withType(JavaCompile).configureEach {
+
+    it.options.encoding = "UTF-8"
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        it.options.release = targetJavaVersion
+    }
+}
+
+java {
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+    archivesBaseName = project.archives_base_name
+
+    withSourcesJar()
 }
 
 jar {
-    manifest {
-        attributes(["Specification-Title"     : "chance_cubes",
-                    "Specification-Vendor"    : "turkeydev",
-                    "Specification-Version"   : "1", // We are version 1 of ourselves
-                    "Implementation-Title"    : project.name,
-                    "Implementation-Version"  : "${version}",
-                    "Implementation-Vendor"   : "turkeydev",
-                    "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")],)
+    from("LICENSE") {
+        rename { "${it}_${project.archivesBaseName}" }
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+
+    repositories {
+
     }
 }

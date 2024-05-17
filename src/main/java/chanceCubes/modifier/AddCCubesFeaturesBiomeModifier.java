@@ -1,6 +1,6 @@
 package chanceCubes.modifier;
 
-import chanceCubes.config.CCubesSettings;
+import chanceCubes.CCubesCore;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
@@ -16,7 +16,7 @@ public record AddCCubesFeaturesBiomeModifier(int id, HolderSet<Biome> biomes, Ho
 	@Override
 	public void modify(Holder<Biome> biome, Phase phase, Builder builder)
 	{
-		boolean flag = id == 0 ? CCubesSettings.surfaceGeneration.get() : CCubesSettings.oreGeneration.get();
+		boolean flag = id == 0 ? CCubesCore.CONFIG.get().surfaceGeneration : CCubesCore.CONFIG.get().oreGeneration;
 		if (phase == Phase.ADD && this.biomes.contains(biome) && flag)
 		{
 			BiomeGenerationSettingsBuilder generationSettings = builder.getGenerationSettings();
@@ -27,6 +27,6 @@ public record AddCCubesFeaturesBiomeModifier(int id, HolderSet<Biome> biomes, Ho
 	@Override
 	public Codec<? extends BiomeModifier> codec()
 	{
-		return CCubesModifiers.ADD_CCUBES_FEATURES_BIOME_MODIFIER_TYPE.get();
+		return CCubesModifiers.ADD_CCUBES_FEATURES_BIOME_MODIFIER_TYPE;
 	}
 }

@@ -18,8 +18,6 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
 
 public class ItemRewardSelectorPendant extends BaseChanceCubesItem
 {
@@ -52,7 +50,7 @@ public class ItemRewardSelectorPendant extends BaseChanceCubesItem
 
 		if(context.getItemInHand().getTag() != null && context.getItemInHand().getTag().contains("Reward"))
 		{
-			if(level.getBlockState(context.getClickedPos()).getBlock().equals(CCubesBlocks.CHANCE_CUBE.get()))
+			if(level.getBlockState(context.getClickedPos()).getBlock().equals(CCubesBlocks.CHANCE_CUBE))
 			{
 				level.setBlockAndUpdate(context.getClickedPos(), Blocks.AIR.defaultBlockState());
 				IChanceCubeReward reward = GlobalCCRewardRegistry.DEFAULT.getRewardByName(context.getItemInHand().getTag().getString("Reward"));
@@ -61,7 +59,7 @@ public class ItemRewardSelectorPendant extends BaseChanceCubesItem
 				else
 					RewardsUtil.sendMessageToPlayer(context.getPlayer(), "That reward does not exist for this cube!");
 			}
-			else if(level.getBlockState(context.getClickedPos()).getBlock().equals(CCubesBlocks.GIANT_CUBE.get()))
+			else if(level.getBlockState(context.getClickedPos()).getBlock().equals(CCubesBlocks.GIANT_CUBE))
 			{
 				BlockEntity ent = level.getBlockEntity(context.getClickedPos());
 				if(!(ent instanceof TileGiantCube giant))

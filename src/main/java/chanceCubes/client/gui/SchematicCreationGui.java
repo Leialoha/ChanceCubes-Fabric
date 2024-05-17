@@ -4,15 +4,15 @@ import chanceCubes.client.listeners.RenderEvent;
 import chanceCubes.mcwrapper.ComponentWrapper;
 import chanceCubes.util.RewardsUtil;
 import chanceCubes.util.SchematicUtil;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public class SchematicCreationGui extends Screen
 {
 	private final String[] buttonText = {"x--", "x++", "y--", "y++", "z--", "z++"};
@@ -103,7 +103,7 @@ public class SchematicCreationGui extends Screen
 	@Override
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
 	{
-		renderBackground(guiGraphics, mouseX, mouseY, partialTicks); //TODO: Test if this works or else feed the blit
+		renderBackground(guiGraphics); //TODO: Test if this works or else feed the blit
 //		poseStack.blit(INSERT_TEXTURE, 0, 0, this.width, this.height, 0xBB000000, 0xBB000000);
 		if(this.nameField != null)
 			this.nameField.render(guiGraphics, mouseX, mouseY, partialTicks);

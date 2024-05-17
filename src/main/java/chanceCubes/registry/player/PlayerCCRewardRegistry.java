@@ -14,7 +14,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.apache.logging.log4j.Level;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -93,7 +92,7 @@ public class PlayerCCRewardRegistry
 		return null;
 	}
 
-	public void triggerRandomReward(ServerLevel level, BlockPos pos, @Nonnull Player player, int chance)
+	public void triggerRandomReward(ServerLevel level, BlockPos pos, Player player, int chance)
 	{
 		if(streamerReward.containsKey(player.getUUID()) && RewardsUtil.rand.nextInt(100) == 42)
 		{
@@ -119,16 +118,16 @@ public class PlayerCCRewardRegistry
 			return;
 		}
 
-//		if(CCubesSettings.doesHolidayRewardTrigger && CCubesSettings.holidayReward != null)
-//		{
-//			triggerReward(CCubesSettings.holidayReward, world, pos, player);
-//			CCubesCore.logger.log(Level.INFO, "The " + CCubesSettings.holidayReward.getName() + " holiday reward has been triggered!!!!");
-//			CCubesSettings.doesHolidayRewardTrigger = false;
-//			CCubesSettings.holidayRewardTriggered = true;
-//			ConfigLoader.config.get(ConfigLoader.genCat, "HolidayRewardTriggered", false, "Don't touch! Well I mean you can touch it, if you want. I can't stop you. I'm only text.").setValue(true);
-//			ConfigLoader.config.save();
-//			return;
-//		}
+		// if(CCubesSettings.doesHolidayRewardTrigger && CCubesSettings.holidayReward != null)
+		// {
+		// 	triggerReward(CCubesSettings.holidayReward, world, pos, player);
+		// 	CCubesCore.logger.log(Level.INFO, "The " + CCubesSettings.holidayReward.getName() + " holiday reward has been triggered!!!!");
+		// 	CCubesSettings.doesHolidayRewardTrigger = false;
+		// 	CCubesCore.CONFIG.get().holidayRewardTriggered = true;
+		// 	ConfigLoader.config.get(ConfigLoader.genCat, "HolidayRewardTriggered", false, "Don't touch! Well I mean you can touch it, if you want. I can't stop you. I'm only text.").setValue(true);
+		// 	ConfigLoader.config.save();
+		// 	return;
+		// }
 
 		for(int i = 0; i < player.getInventory().items.size(); i++)
 		{
@@ -136,7 +135,7 @@ public class PlayerCCRewardRegistry
 			if(!stack.isEmpty() && stack.getItem() instanceof ItemChancePendant pendant)
 			{
 				pendant.damage(stack);
-				if(stack.getDamageValue() >= CCubesSettings.pendantUses.get())
+				if(stack.getDamageValue() >= CCubesCore.CONFIG.get().pendantUses)
 					player.getInventory().setItem(i, ItemStack.EMPTY);
 				chance += pendant.getChanceIncrease();
 				if(chance > 100)
@@ -146,7 +145,7 @@ public class PlayerCCRewardRegistry
 		}
 
 		IChanceCubeReward pickedReward;
-		if(CCubesSettings.rewardsEqualChance.get())
+		if(CCubesCore.CONFIG.get().rewardsEqualChance)
 		{
 			pickedReward = sortedRewards.get(RewardsUtil.rand.nextInt(sortedRewards.size())).reward;
 			if(cooldownList.contains(pickedReward))
@@ -163,8 +162,8 @@ public class PlayerCCRewardRegistry
 		{
 			int lowerIndex = 0;
 			int upperIndex = sortedRewards.size() - 1;
-			int lowerRange = Math.max(chance - CCubesSettings.rangeMin.get(), -100);
-			int upperRange = Math.min(chance + CCubesSettings.rangeMax.get(), 100);
+			int lowerRange = Math.max(chance - CCubesCore.CONFIG.get().rangeMin, -100);
+			int upperRange = Math.min(chance + CCubesCore.CONFIG.get().rangeMax, 100);
 
 			while(sortedRewards.get(lowerIndex).getChanceValue() < lowerRange)
 			{

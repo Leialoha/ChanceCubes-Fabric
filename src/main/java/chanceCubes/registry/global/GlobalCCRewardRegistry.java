@@ -165,7 +165,7 @@ public class GlobalCCRewardRegistry
 			triggerReward(CCubesSettings.holidayReward, world, pos, player);
 			CCubesCore.logger.log(Level.INFO, "The " + CCubesSettings.holidayReward.getName() + " holiday reward has been triggered!!!!");
 			CCubesSettings.doesHolidayRewardTrigger = false;
-			CCubesSettings.holidayRewardTriggered.set(true);
+			CCubesCore.CONFIG.get().holidayRewardTriggered = true;
 			return;
 		}
 

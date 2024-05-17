@@ -55,7 +55,7 @@ public class ItemSingleUseRewardSelectorPendant extends BaseChanceCubesItem
 			Player player = context.getPlayer();
 			if(player != null)
 			{
-				if(level.getBlockState(context.getClickedPos()).getBlock().equals(CCubesBlocks.CHANCE_CUBE.get()))
+				if(level.getBlockState(context.getClickedPos()).getBlock().equals(CCubesBlocks.CHANCE_CUBE))
 				{
 					level.setBlockAndUpdate(context.getClickedPos(), Blocks.AIR.defaultBlockState());
 					IChanceCubeReward reward = GlobalCCRewardRegistry.DEFAULT.getRewardByName(context.getItemInHand().getTag().getString("Reward"));
@@ -69,7 +69,7 @@ public class ItemSingleUseRewardSelectorPendant extends BaseChanceCubesItem
 						RewardsUtil.sendMessageToPlayer(player, "That reward does not exist for this cube!");
 					}
 				}
-				else if(level.getBlockState(context.getClickedPos()).getBlock().equals(CCubesBlocks.GIANT_CUBE.get()))
+				else if(level.getBlockState(context.getClickedPos()).getBlock().equals(CCubesBlocks.GIANT_CUBE))
 				{
 					BlockEntity ent = level.getBlockEntity(context.getClickedPos());
 					if(!(ent instanceof TileGiantCube giant))

@@ -177,7 +177,7 @@ public abstract class BossBaseReward extends BaseCustomReward
 		double maxDamage = 3;
 		for(ItemStack stack : player.getInventory().items)
 		{
-			Multimap<Attribute, AttributeModifier> atributes = stack.getItem().getAttributeModifiers(EquipmentSlot.MAINHAND, stack);
+			Multimap<Attribute, AttributeModifier> atributes = stack.getItem().getAttributeModifiers(stack, EquipmentSlot.MAINHAND);
 			if(atributes.containsKey(Attributes.ATTACK_DAMAGE))
 			{
 				Collection<AttributeModifier> damageList = atributes.get(Attributes.ATTACK_DAMAGE);
@@ -200,7 +200,7 @@ public abstract class BossBaseReward extends BaseCustomReward
 		ItemStack maxItem = ItemStack.EMPTY;
 		for(ItemStack stack : player.getInventory().items)
 		{
-			Multimap<Attribute, AttributeModifier> atributes = stack.getItem().getAttributeModifiers(EquipmentSlot.MAINHAND, stack);
+			Multimap<Attribute, AttributeModifier> atributes = stack.getItem().getAttributeModifiers(stack, EquipmentSlot.MAINHAND);
 			if(atributes.containsKey(Attributes.ATTACK_DAMAGE))
 			{
 				Collection<AttributeModifier> damageList = atributes.get(Attributes.ATTACK_DAMAGE);

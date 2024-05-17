@@ -4,6 +4,7 @@ import chanceCubes.CCubesCore;
 import chanceCubes.blocks.CCubesBlocks;
 import chanceCubes.worldgen.CCSurfaceFeature;
 import net.minecraft.core.HolderGetter;
+import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.data.worldgen.features.FeatureUtils;
@@ -24,20 +25,16 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.core.registries.BuiltInRegistries;
 
 import java.util.List;
 
-@Mod.EventBusSubscriber(modid = CCubesCore.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+// @Mod.EventBusSubscriber(modid = CCubesCore.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class WorldGen
 {
-	public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, CCubesCore.MODID);
 	private static final ResourceLocation CC_SURFACE_ID = new ResourceLocation(CCubesCore.MODID, "chance_cube_worldgen");
 	private static final ResourceLocation CC_ORE_ID = new ResourceLocation(CCubesCore.MODID, "chance_cube_oregen");
-	private static final RegistryObject<Feature<NoneFeatureConfiguration>> CC_SURFACE_FEATURE = FEATURES.register("chance_cube_worldgen", CCSurfaceFeature::new);
+	private static final Feature<NoneFeatureConfiguration> CC_SURFACE_FEATURE = Registry.register(BuiltInRegistries.FEATURE, new ResourceLocation(CCubesCore.MODID, "chance_cube_worldgen"), new CCSurfaceFeature());
 
 
 	public static final ResourceKey<ConfiguredFeature<?, ?>> CONFIGURED_CC_SURFACE = FeatureUtils.createKey(CC_SURFACE_ID.toString());
@@ -45,11 +42,11 @@ public class WorldGen
 
 	public static void configuredBootstrap(BootstapContext<ConfiguredFeature<?, ?>> context)
 	{
-		FeatureUtils.register(context, CONFIGURED_CC_SURFACE, WorldGen.CC_SURFACE_FEATURE.get());
+		FeatureUtils.register(context, CONFIGURED_CC_SURFACE, WorldGen.CC_SURFACE_FEATURE);
 
 		RuleTest ruletest = new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES);
 		RuleTest ruletest2 = new TagMatchTest(BlockTags.DEEPSLATE_ORE_REPLACEABLES);
-		List<OreConfiguration.TargetBlockState> ccOreTarget = List.of(OreConfiguration.target(ruletest, CCubesBlocks.CHANCE_CUBE.get().defaultBlockState()), OreConfiguration.target(ruletest2, CCubesBlocks.CHANCE_CUBE.get().defaultBlockState()));
+		List<OreConfiguration.TargetBlockState> ccOreTarget = List.of(OreConfiguration.target(ruletest, CCubesBlocks.CHANCE_CUBE.defaultBlockState()), OreConfiguration.target(ruletest2, CCubesBlocks.CHANCE_CUBE.defaultBlockState()));
 		FeatureUtils.register(context, CONFIGURED_CC_ORE, Feature.ORE, new OreConfiguration(ccOreTarget, 4));
 	}
 

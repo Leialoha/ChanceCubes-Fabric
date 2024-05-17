@@ -16,7 +16,6 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -48,7 +47,7 @@ public class CCubesDatagen
 		registryBuilder.add(Registries.DAMAGE_TYPE, CCubesDamageTypeProvider::bootstrap);
 		registryBuilder.add(Registries.CONFIGURED_FEATURE, WorldGen::configuredBootstrap);
 		registryBuilder.add(Registries.PLACED_FEATURE, WorldGen::placedBootstrap);
-		registryBuilder.add(ForgeRegistries.Keys.BIOME_MODIFIERS, CCubesBiomeModifiers::bootstrap);
+		registryBuilder.add(Registries.Keys.BIOME_MODIFIERS, CCubesBiomeModifiers::bootstrap);
 		// We need the BIOME registry to be present, so we can use a biome tag, doesn't matter that it's empty
 		registryBuilder.add(Registries.BIOME, context -> {
 		});

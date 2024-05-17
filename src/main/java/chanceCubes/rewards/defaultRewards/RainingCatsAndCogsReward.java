@@ -18,7 +18,7 @@ import net.minecraft.world.entity.player.Player;
 
 public class RainingCatsAndCogsReward extends BaseCustomReward
 {
-	private final String[] names = {"Radiant_Sora", "Turkey", "MrComputerGhost", "Valsis", "Silver", "Amatt", "Musician", "ReNinjaKitteh", "QuirkyGeek17"};
+	private final String[] names = {"Traverse_Joe", "Turkey", "MrComputerGhost", "Valsis", "Silver", "Amatt", "Musician", "ReNinjaKitteh", "QuirkyGeek17"};
 
 	public RainingCatsAndCogsReward()
 	{

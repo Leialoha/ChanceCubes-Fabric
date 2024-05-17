@@ -24,7 +24,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraft.core.registries.BuiltInRegistries;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -239,9 +239,9 @@ public class SchematicUtil
 					BlockState state;
 					String[] parts = blockData.split(":");
 					if(parts.length == 1)
-						state = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(parts[0])).defaultBlockState();
+						state = BuiltInRegistries.BLOCK.get(new ResourceLocation(parts[0])).defaultBlockState();
 					else
-						state = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(parts[0], parts[1])).defaultBlockState();
+						state = BuiltInRegistries.BLOCK.get(new ResourceLocation(parts[0], parts[1])).defaultBlockState();
 
 					if(parts.length == 3)
 						state = decodeBlockState(state, parts[2]);

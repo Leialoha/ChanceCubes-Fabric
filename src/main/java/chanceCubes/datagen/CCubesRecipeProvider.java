@@ -22,7 +22,7 @@ public class CCubesRecipeProvider extends RecipeProvider
 	@Override
 	protected void buildRecipes(@NotNull RecipeOutput output)
 	{
-		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CCubesBlocks.CHANCE_CUBE.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CCubesBlocks.CHANCE_CUBE)
 				.pattern("LLL")
 				.pattern("LBL")
 				.pattern("LLL")
@@ -32,7 +32,7 @@ public class CCubesRecipeProvider extends RecipeProvider
 				.unlockedBy("has_lapis_lazuli", has(Tags.Items.GEMS_LAPIS))
 				.save(output, modLoc("chance_cube_crafting"));
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, CCubesItems.SCANNER.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, CCubesItems.SCANNER)
 				.pattern("IGI")
 				.pattern("GPG")
 				.pattern("IGI")
@@ -44,7 +44,7 @@ public class CCubesRecipeProvider extends RecipeProvider
 				.unlockedBy("has_pendant", has(CCubesItems.CHANCE_PENDANT_T1.get()))
 				.save(output, modLoc("cube_scanner_crafting"));
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CCubesItems.SILK_PENDANT.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CCubesItems.SILK_PENDANT)
 				.pattern("SBS")
 				.pattern("SPS")
 				.pattern("SBS")

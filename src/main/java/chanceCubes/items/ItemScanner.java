@@ -65,7 +65,7 @@ public class ItemScanner extends BaseChanceCubesItem
 
 					BlockPos position = BlockPos.containing(i, j, k);
 
-					if(level.getBlockState(position).getBlock().equals(CCubesBlocks.CHANCE_CUBE.get()))
+					if(level.getBlockState(position).getBlock().equals(CCubesBlocks.CHANCE_CUBE))
 					{
 						TileChanceCube te = ((TileChanceCube) level.getBlockEntity(BlockPos.containing(i, j, k)));
 						if(te != null)
@@ -76,7 +76,7 @@ public class ItemScanner extends BaseChanceCubesItem
 							RenderEvent.setLookingAtChance(te.getChance());
 						}
 					}
-//					else if(level.getBlockState(position).getBlock().equals(CCubesBlocks.CHANCE_ICOSAHEDRON.get()))
+//					else if(level.getBlockState(position).getBlock().equals(CCubesBlocks.CHANCE_ICOSAHEDRON))
 //					{
 //						TileChanceD20 te = ((TileChanceD20) level.getBlockEntity(BlockPos.containing(i, j, k)));
 //						if(te != null)
@@ -87,7 +87,7 @@ public class ItemScanner extends BaseChanceCubesItem
 //							RenderEvent.setLookingAtChance(te.getChance());
 //						}
 //					}
-					else if(level.getBlockState(position).getBlock().equals(CCubesBlocks.GIANT_CUBE.get()))
+					else if(level.getBlockState(position).getBlock().equals(CCubesBlocks.GIANT_CUBE))
 					{
 						RenderEvent.setLookingAtChance(-201);
 						RenderEvent.setLookingAt(true);

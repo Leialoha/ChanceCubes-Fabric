@@ -4,6 +4,8 @@ import chanceCubes.CCubesCore;
 import chanceCubes.client.ClientHelper;
 import chanceCubes.mcwrapper.ComponentWrapper;
 import chanceCubes.network.PacketRewardSelector;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
@@ -12,10 +14,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public class RewardSelectorPendantScreen extends Screen
 {
 	private static final ResourceLocation guiTextures = new ResourceLocation(CCubesCore.MODID, "textures/gui/container/gui_reward_selector_pendant.png");

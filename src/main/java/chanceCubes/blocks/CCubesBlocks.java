@@ -5,27 +5,34 @@ import chanceCubes.tileentities.TileChanceCube;
 import chanceCubes.tileentities.TileChanceD20;
 import chanceCubes.tileentities.TileCubeDispenser;
 import chanceCubes.tileentities.TileGiantCube;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.world.level.block.entity.BlockEntityType.BlockEntitySupplier;
 
 public class CCubesBlocks
 {
-	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, CCubesCore.MODID);
+	public static final BaseChanceBlock CHANCE_CUBE = registerBlock("chance_cube", new BlockChanceCube());
+	public static final BaseChanceBlock CHANCE_ICOSAHEDRON = registerBlock("chance_icosahedron", new BlockChanceD20());
+	public static final BaseChanceBlock GIANT_CUBE = registerBlock("giant_chance_cube", new BlockGiantCube());
+	public static final BaseChanceBlock COMPACT_GIANT_CUBE = registerBlock("compact_giant_chance_cube", new BlockCompactGiantCube());
+	public static final BaseChanceBlock CUBE_DISPENSER = registerBlock("cube_dispenser", new BlockCubeDispenser());
 
-	public static final RegistryObject<BaseChanceBlock> CHANCE_CUBE = BLOCKS.register("chance_cube", BlockChanceCube::new);
-	public static final RegistryObject<BaseChanceBlock> CHANCE_ICOSAHEDRON = BLOCKS.register("chance_icosahedron", BlockChanceD20::new);
-	public static final RegistryObject<BaseChanceBlock> GIANT_CUBE = BLOCKS.register("giant_chance_cube", BlockGiantCube::new);
-	public static final RegistryObject<BaseChanceBlock> COMPACT_GIANT_CUBE = BLOCKS.register("compact_giant_chance_cube", BlockCompactGiantCube::new);
-	public static final RegistryObject<BaseChanceBlock> CUBE_DISPENSER = BLOCKS.register("cube_dispenser", BlockCubeDispenser::new);
+	public static final BlockEntityType<TileChanceCube> TILE_CHANCE_CUBE = registerBlockEntity("tile_chance_cube", TileChanceCube::new, CCubesBlocks.CHANCE_CUBE);
+	public static final BlockEntityType<TileChanceD20> TILE_CHANCE_ICOSAHEDRON = registerBlockEntity("tile_chance_icosahedron", TileChanceD20::new, CCubesBlocks.CHANCE_ICOSAHEDRON);
+	public static final BlockEntityType<TileGiantCube> TILE_CHANCE_GIANT = registerBlockEntity("tile_chance_giant", TileGiantCube::new, CCubesBlocks.GIANT_CUBE);
+	public static final BlockEntityType<TileCubeDispenser> TILE_CUBE_DISPENSER = registerBlockEntity("tile_cube_dispenser", TileCubeDispenser::new, CCubesBlocks.CUBE_DISPENSER);
+	
+	private static <T extends Block> T registerBlock(String id, T block) {
+		return Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(CCubesCore.MODID, id), block);
+	}
 
-	public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, CCubesCore.MODID);
+	private static <T extends BlockEntity> BlockEntityType<T> registerBlockEntity(String id, BlockEntitySupplier<T> sup, Block ...blocks) {
+		return Registry.register( BuiltInRegistries.BLOCK_ENTITY_TYPE, id, BlockEntityType.Builder.of(sup, blocks).build(null));
+	}
 
-	public static RegistryObject<BlockEntityType<TileChanceCube>> TILE_CHANCE_CUBE = BLOCK_ENTITIES.register("tile_chance_cube", () -> BlockEntityType.Builder.of(TileChanceCube::new, CCubesBlocks.CHANCE_CUBE.get()).build(null));
-	public static RegistryObject<BlockEntityType<TileChanceD20>> TILE_CHANCE_ICOSAHEDRON = BLOCK_ENTITIES.register("tile_chance_icosahedron", () -> BlockEntityType.Builder.of(TileChanceD20::new, CCubesBlocks.CHANCE_ICOSAHEDRON.get()).build(null));
-	public static RegistryObject<BlockEntityType<TileGiantCube>> TILE_CHANCE_GIANT = BLOCK_ENTITIES.register("tile_chance_giant", () -> BlockEntityType.Builder.of(TileGiantCube::new, CCubesBlocks.GIANT_CUBE.get()).build(null));
-	public static RegistryObject<BlockEntityType<TileCubeDispenser>> TILE_CUBE_DISPENSER = BLOCK_ENTITIES.register("tile_cube_dispenser", () -> BlockEntityType.Builder.of(TileCubeDispenser::new, CCubesBlocks.CUBE_DISPENSER.get()).build(null));
-
+	public static void register() { }
 }

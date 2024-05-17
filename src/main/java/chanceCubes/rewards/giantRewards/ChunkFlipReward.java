@@ -29,7 +29,7 @@ public class ChunkFlipReward extends BaseCustomReward
 	{
 		int z = (pos.getZ() >> 4) << 4;
 		int x = (pos.getX() >> 4) << 4;
-		level.playSound(null, pos.getX(), pos.getY(), pos.getZ(), CCubesSounds.GIANT_CUBE_SPAWN.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+		level.playSound(null, pos.getX(), pos.getY(), pos.getZ(), CCubesSounds.GIANT_CUBE_SPAWN, SoundSource.BLOCKS, 1.0F, 1.0F);
 		RewardsUtil.sendMessageToPlayer(player, "Inception!!!!");
 		Scheduler.scheduleTask(new Task("Chunk_Flip_Delay", -1, 10)
 		{
@@ -61,7 +61,7 @@ public class ChunkFlipReward extends BaseCustomReward
 						BlockEntity te1 = level.getBlockEntity(pos1);
 						BlockEntity te2 = level.getBlockEntity(pos2);
 
-						if(!b.getBlock().equals(Blocks.GRAVEL) && !b.getBlock().equals(CCubesBlocks.GIANT_CUBE.get()) && !RewardsUtil.isBlockUnbreakable(level, pos) && !CCubesSettings.nonReplaceableBlocks.contains(level.getBlockState(pos)))
+						if(!b.getBlock().equals(Blocks.GRAVEL) && !b.getBlock().equals(CCubesBlocks.GIANT_CUBE) && !RewardsUtil.isBlockUnbreakable(level, pos) && !CCubesSettings.nonReplaceableBlocks.contains(level.getBlockState(pos)))
 						{
 							level.setBlock(pos1, b2, 2);
 							level.setBlock(pos2, b, 2);

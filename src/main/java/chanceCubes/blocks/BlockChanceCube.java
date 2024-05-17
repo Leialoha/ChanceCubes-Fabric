@@ -51,9 +51,9 @@ public class BlockChanceCube extends BaseChanceBlock implements EntityBlock
 		BlockEntity be = level.getBlockEntity(pos);
 		if(!level.isClientSide() && be instanceof TileChanceCube te)
 		{
-			if(!player.getInventory().getSelected().isEmpty() && player.getInventory().getSelected().getItem().equals(CCubesItems.SILK_PENDANT.get()))
+			if(!player.getInventory().getSelected().isEmpty() && player.getInventory().getSelected().getItem().equals(CCubesItems.SILK_PENDANT))
 			{
-				ItemStack stackCube = new ItemStack(CCubesItems.CHANCE_CUBE.get(), 1);
+				ItemStack stackCube = new ItemStack(CCubesItems.CHANCE_CUBE, 1);
 				((ItemChanceCube) stackCube.getItem()).setChance(stackCube, te.isScanned() ? te.getChance() : -101);
 				ItemEntity blockStack = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), stackCube);
 				level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());

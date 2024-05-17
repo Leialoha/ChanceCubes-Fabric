@@ -3,6 +3,9 @@ package chanceCubes.datagen;
 import chanceCubes.CCubesCore;
 import chanceCubes.listeners.WorldGen;
 import chanceCubes.modifier.AddCCubesFeaturesBiomeModifier;
+import net.fabricmc.fabric.api.biome.v1.BiomeModification;
+import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
+import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
@@ -14,19 +17,19 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraftforge.common.world.BiomeModifier;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraft.core.registries.BuiltInRegistries;
 
 public class CCubesBiomeModifiers
 {
-	public static ResourceKey<BiomeModifier> CC_SURFACE = createKey("chance_cube_worldgen");
-	public static ResourceKey<BiomeModifier> CC_ORE = createKey("chance_cube_oregen");
+	public static ResourceKey<BiomeModification> CC_SURFACE = createKey("chance_cube_worldgen");
+	public static ResourceKey<BiomeModification> CC_ORE = createKey("chance_cube_oregen");
 
-	private static ResourceKey<BiomeModifier> createKey(String id)
-	{
-		return ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(CCubesCore.MODID, id));
+	private static ResourceKey<BiomeModification> createKey(String id) {
+		BiomeModification bm = BiomeModifications.create(new ResourceLocation(CCubesCore.MODID, id));
+		// return ResourceKey.create(BiomeModifications.create());
 	}
 
-	public static void bootstrap(BootstapContext<BiomeModifier> context)
+	public static void bootstrap(BootstapContext<BiomeModification> context)
 	{
 		HolderGetter<Biome> biomeGetter = context.lookup(Registries.BIOME);
 		HolderGetter<PlacedFeature> placedGetter = context.lookup(Registries.PLACED_FEATURE);

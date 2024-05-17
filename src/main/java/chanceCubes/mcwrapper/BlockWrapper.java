@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.entity.SignText;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraft.core.registries.BuiltInRegistries;
 
 public class BlockWrapper
 {
@@ -20,7 +20,7 @@ public class BlockWrapper
 		for(int i = 0; i < Math.min(linesText.length, 3); i++)
 			text = text.setMessage(i, ComponentWrapper.string(linesText[i]));
 
-		sign.frontText = text;
+		sign.setText(text, true);
 
 		return sign;
 	}
@@ -32,7 +32,7 @@ public class BlockWrapper
 			text = text.setMessage(i, ComponentWrapper.string(linesText[i]));
 
 		if(signBE instanceof SignBlockEntity sign)
-			sign.frontText = text;
+			sign.setText(text, true);
 	}
 
 	public static boolean isBlockSolid(Level level, BlockPos pos)
@@ -49,6 +49,6 @@ public class BlockWrapper
 
 	public static ResourceLocation getBlockId(Block b)
 	{
-		return ForgeRegistries.BLOCKS.getKey(b);
+		return BuiltInRegistries.BLOCK.getKey(b);
 	}
 }
